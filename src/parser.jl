@@ -1,7 +1,7 @@
 """
     parse(source; optimize_buffer_size = true, autoescape = true, path = nothing) -> Template
 
-Compile an Iwai template from a string.
+Compile an IwaiEngine template from a string.
 
 - `optimize_buffer_size=true` reuses the largest previously observed output size
   as the next render buffer hint.

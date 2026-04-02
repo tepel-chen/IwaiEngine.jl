@@ -1,11 +1,11 @@
 pushfirst!(LOAD_PATH, joinpath(@__DIR__, ".."))
 
 using Documenter
-using Iwai
+using IwaiEngine
 
 makedocs(
-    sitename = "Iwai.jl",
-    modules = [Iwai],
+    sitename = "IwaiEngine.jl",
+    modules = [IwaiEngine],
     format = Documenter.HTML(),
     pages = [
         "Home" => "index.md",
@@ -18,4 +18,4 @@ makedocs(
     ],
 )
 
-deploydocs(repo = "github.com/tepel-chen/Iwai.jl.git")
+deploydocs(repo = "github.com/tepel-chen/IwaiEngine.jl.git")

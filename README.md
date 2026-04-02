@@ -1,10 +1,10 @@
-# Iwai
+# IwaiEngine
 
-[![Build Status](https://github.com/tepel-chen/Iwai.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/tepel-chen/Iwai.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Build Status](https://github.com/tepel-chen/IwaiEngine.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/tepel-chen/IwaiEngine.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
 Jinja-like template engine for Julia.
 
-Iwai uses `NamedTuple` render contexts. Dictionary-based render contexts are not
+IwaiEngine uses `NamedTuple` render contexts. Dictionary-based render contexts are not
 supported.
 
 Current features:

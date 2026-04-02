@@ -1,6 +1,6 @@
 # Inheritance
 
-Iwai supports file-based template composition through `{% include %}`,
+IwaiEngine supports file-based template composition through `{% include %}`,
 `{% extends %}`, and `{% block %}`.
 
 ## Include
@@ -39,7 +39,7 @@ variables defined with `{% set %}`.
 ```
 
 ```@example
-using Iwai
+using IwaiEngine
 using Base.Filesystem: mktempdir
 
 mktempdir() do dir
@@ -57,7 +57,7 @@ mktempdir() do dir
 {% end %}
 """)
 
-    tpl = Iwai.load(joinpath(dir, "page.iwai"))
+    tpl = IwaiEngine.load(joinpath(dir, "page.iwai"))
     println(tpl((name = "Iwai",)))
 end
 ```

@@ -1,4 +1,4 @@
-module Iwai
+module IwaiEngine
 
 export Template, load, parse
 

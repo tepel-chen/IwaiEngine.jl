@@ -1,11 +1,11 @@
-using Iwai
+using IwaiEngine
 using Test
 
-@testset "Iwai.jl" begin
-    template = Iwai.parse("Hello {{ name }}!")
+@testset "IwaiEngine.jl" begin
+    template = IwaiEngine.parse("Hello {{ name }}!")
     @test template((name = "Iwai",)) == "Hello Iwai!"
 
-    table_template = Iwai.parse("""
+    table_template = IwaiEngine.parse("""
 <table>
 {% for row in table %}
 <tr>{% for col in row %}<td>{{ col }}</td>{% end %}</tr>
@@ -15,7 +15,7 @@ using Test
     compact_table = replace(table_template((table = [[1, 2], [3, 4]],)), r"\s+" => "")
     @test compact_table == "<table><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>"
 
-    teams_template = Iwai.parse("""
+    teams_template = IwaiEngine.parse("""
 <ul>
 {% for team in teams %}
 <li class="{% if team.champion %}champion{% end %}">{{ team.name }}: {{ team.score }}</li>
@@ -35,32 +35,32 @@ using Test
         template_path = joinpath(tmpdir, "hello.iwai")
         write(template_path, "Count {{ count }}")
 
-        first_loaded = Iwai.load(template_path)
-        second_loaded = Iwai.load(template_path)
+        first_loaded = IwaiEngine.load(template_path)
+        second_loaded = IwaiEngine.load(template_path)
         @test first_loaded === second_loaded
         @test first_loaded((count = 1,)) == "Count 1"
 
         sleep(1.1)
         write(template_path, "Count {{ count }}!")
-        reloaded = Iwai.load(template_path)
+        reloaded = IwaiEngine.load(template_path)
         @test reloaded !== first_loaded
         @test reloaded((count = 2,)) == "Count 2!"
     end
 
     @test_throws ArgumentError template(Dict(:name => "Iwai"))
 
-    sized = Iwai.parse("Hello {{ name }}"; optimize_buffer_size = true)
+    sized = IwaiEngine.parse("Hello {{ name }}"; optimize_buffer_size = true)
     @test sized.max_output_bytes == 0
     @test sized((name = "Iwai",)) == "Hello Iwai"
     @test sized.max_output_bytes == ncodeunits("Hello Iwai")
     @test sized((name = "Iwa",)) == "Hello Iwa"
     @test sized.max_output_bytes == ncodeunits("Hello Iwai")
 
-    unsized = Iwai.parse("Hello {{ name }}"; optimize_buffer_size = false)
+    unsized = IwaiEngine.parse("Hello {{ name }}"; optimize_buffer_size = false)
     @test unsized((name = "Iwai",)) == "Hello Iwai"
     @test unsized.max_output_bytes == 0
 
-    extras = Iwai.parse("""
+    extras = IwaiEngine.parse("""
 {# comment #}
 {% raw %}{{ untouched }}{% endraw %}
 {% set title = name|upper %}
@@ -76,7 +76,7 @@ using Test
     @test occursin("fallback", extras_rendered)
     @test occursin("&lt;b&gt;safe?&lt;/b&gt;", extras_rendered)
 
-    loop_template = Iwai.parse("""
+    loop_template = IwaiEngine.parse("""
 {% for team in teams %}
 {{ loop.index0 }}/{{ loop.index }}/{{ loop.first }}/{{ loop.last }}:{{ team.name }}
 {% end %}
@@ -85,7 +85,7 @@ using Test
     @test occursin("0/1/true/false:A", loop_rendered)
     @test occursin("1/2/false/true:B", loop_rendered)
 
-    elif_template = Iwai.parse("""
+    elif_template = IwaiEngine.parse("""
 {% if value < 0 %}neg{% elif value == 0 %}zero{% else %}pos{% end %}
 """)
     @test strip(elif_template((value = -1,))) == "neg"
@@ -98,7 +98,7 @@ using Test
         write(child_path, "<li>{{ item|upper }}</li>")
         write(parent_path, "<ul>{% include \"child.iwai\" %}</ul>")
 
-        parent = Iwai.load(parent_path)
+        parent = IwaiEngine.load(parent_path)
         @test parent((item = "nested",)) == "<ul><li>NESTED</li></ul>"
     end
 
@@ -109,7 +109,7 @@ using Test
         write(escaped_path, "escaped")
 
         err = try
-            Iwai.load(parent_path)((;))
+            IwaiEngine.load(parent_path)((;))
             nothing
         catch caught
             caught
@@ -129,7 +129,7 @@ using Test
         write(parent_path, "{% include \"linked.iwai\" %}")
 
         err = try
-            Iwai.load(parent_path)((;))
+            IwaiEngine.load(parent_path)((;))
             nothing
         catch caught
             caught
@@ -158,7 +158,7 @@ using Test
 {% end %}
 """)
 
-        child = Iwai.load(child_path)
+        child = IwaiEngine.load(child_path)
         rendered = child((name = "Iwai",))
         @test occursin("<h1>Base</h1>", rendered)
         @test occursin("<p>Hello Iwai</p>", rendered)
@@ -170,7 +170,7 @@ using Test
         write(joinpath(tmpdir, "..", "base.iwai"), "<p>escaped</p>")
 
         err = try
-            Iwai.load(joinpath(tmpdir, "child.iwai"))
+            IwaiEngine.load(joinpath(tmpdir, "child.iwai"))
             nothing
         catch caught
             caught
@@ -179,7 +179,7 @@ using Test
         @test occursin("template path escapes root", sprint(showerror, err))
     end
 
-    auto = Iwai.parse("""
+    auto = IwaiEngine.parse("""
 {{ html }}
 {{ html|safe }}
 {{ html|escape }}
@@ -193,6 +193,6 @@ using Test
     @test occursin("<b>x</b>", auto_rendered)
     @test count(occursin("&lt;b&gt;x&lt;/b&gt;", line) for line in split(auto_rendered, '\n')) >= 2
 
-    no_auto = Iwai.parse("{{ html }}"; autoescape = false)
+    no_auto = IwaiEngine.parse("{{ html }}"; autoescape = false)
     @test no_auto((html = "<b>x</b>",)) == "<b>x</b>"
 end

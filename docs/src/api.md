@@ -1,7 +1,7 @@
 # API
 
 ```@docs
-Iwai.Template
-Iwai.parse
-Iwai.load
+IwaiEngine.Template
+IwaiEngine.parse
+IwaiEngine.load
 ```

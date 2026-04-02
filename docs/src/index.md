@@ -1,8 +1,8 @@
-# Iwai.jl
+# IwaiEngine.jl
 
 Jinja-like template engine for Julia.
 
-Iwai compiles templates to Julia functions. It supports a compact Jinja-style
+IwaiEngine compiles templates to Julia functions. It supports a compact Jinja-style
 syntax while staying fast enough for server-side rendering workloads.
 
 ## Features
@@ -21,15 +21,15 @@ syntax while staying fast enough for server-side rendering workloads.
 
 ```julia
 using Pkg
-Pkg.add(url = "https://github.com/tepel-chen/Iwai.jl")
+Pkg.add(url = "https://github.com/tepel-chen/IwaiEngine.jl")
 ```
 
 ## Quick Start
 
 ```@example
-using Iwai
+using IwaiEngine
 
-template = Iwai.parse("""
+template = IwaiEngine.parse("""
 <ul>
 {% for team in teams %}
   <li>{{ loop.index }}. {{ team.name }} - {{ team.score }}</li>

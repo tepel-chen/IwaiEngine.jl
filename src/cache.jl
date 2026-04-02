@@ -4,7 +4,7 @@ const TEMPLATE_CACHE_LOCK = ReentrantLock()
 """
     load(path; optimize_buffer_size = true, autoescape = true) -> Template
 
-Load and compile a file-backed Iwai template.
+Load and compile a file-backed IwaiEngine template.
 
 Templates are cached by absolute path, mtime, `optimize_buffer_size`, and
 `autoescape`. Relative `{% include %}` and `{% extends %}` paths are resolved

@@ -1,7 +1,7 @@
 """
     Template
 
-Compiled Iwai template.
+Compiled IwaiEngine template.
 
 `Template` objects are callable. Pass a `NamedTuple` as the render context.
 """
@@ -18,7 +18,7 @@ end
 to_context(init::NamedTuple) = init
 
 function to_context(init)
-    throw(ArgumentError("Iwai templates only support NamedTuple render contexts"))
+    throw(ArgumentError("IwaiEngine templates only support NamedTuple render contexts"))
 end
 
 """
