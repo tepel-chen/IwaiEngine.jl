@@ -3,8 +3,7 @@
 
 Compiled Iwai template.
 
-`Template` objects are callable. Pass a `NamedTuple` or dictionary-like value as
-the render context.
+`Template` objects are callable. Pass a `NamedTuple` as the render context.
 """
 mutable struct Template{F}
     source::String
@@ -18,8 +17,8 @@ end
 
 to_context(init::NamedTuple) = init
 
-function to_context(init::AbstractDict)
-    return (; (Symbol(key) => value for (key, value) in pairs(init))...)
+function to_context(init)
+    throw(ArgumentError("Iwai templates only support NamedTuple render contexts"))
 end
 
 """
@@ -28,7 +27,7 @@ end
 
 Render a compiled template with the given context.
 
-`init` may be a `NamedTuple` or an `AbstractDict`.
+`init` must be a `NamedTuple`.
 """
 function (template::Template)(; init = (;))
     return invoke_template(template, to_context(init))

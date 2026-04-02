@@ -20,13 +20,13 @@ html = template((title = "Home",))
 
 ## Context Values
 
-Render contexts may be passed as `NamedTuple`s or dictionaries.
+Render contexts are passed as `NamedTuple`s.
 
 ```@example
 using Iwai
 
 template = Iwai.parse("{{ title }} / {{ count }}")
-template(Dict(:title => "Todos", :count => 3))
+template((title = "Todos", count = 3))
 ```
 
 ## Filters

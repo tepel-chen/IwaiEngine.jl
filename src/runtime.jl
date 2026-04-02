@@ -127,19 +127,6 @@ end
     end
 end
 
-function lookup_symbol(ctx::AbstractDict, ::Val{sym}) where {sym}
-    if haskey(ctx, sym)
-        return ctx[sym]
-    end
-
-    string_key = String(sym)
-    if haskey(ctx, string_key)
-        return ctx[string_key]
-    end
-
-    return lookup_global(Val(sym))
-end
-
 function apply_filter(::Val{:upper}, value)
     return uppercase(string(value))
 end
@@ -181,17 +168,6 @@ end
 
 function include_context(ctx::NamedTuple, locals)
     return (; pairs(ctx)..., locals...)
-end
-
-function include_context(ctx::AbstractDict, locals)
-    merged = Dict{Symbol,Any}()
-    for (key, value) in pairs(ctx)
-        merged[Symbol(key)] = value
-    end
-    for pair in locals
-        merged[first(pair)] = last(pair)
-    end
-    return merged
 end
 
 function template_root_path(current_path::AbstractString)::String

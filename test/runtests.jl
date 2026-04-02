@@ -3,7 +3,7 @@ using Test
 
 @testset "Iwai.jl" begin
     template = Iwai.parse("Hello {{ name }}!")
-    @test template(Dict(:name => "Iwai")) == "Hello Iwai!"
+    @test template((name = "Iwai",)) == "Hello Iwai!"
 
     table_template = Iwai.parse("""
 <table>
@@ -12,7 +12,7 @@ using Test
 {% end %}
 </table>
 """)
-    compact_table = replace(table_template(Dict(:table => [[1, 2], [3, 4]])), r"\s+" => "")
+    compact_table = replace(table_template((table = [[1, 2], [3, 4]],)), r"\s+" => "")
     @test compact_table == "<table><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>"
 
     teams_template = Iwai.parse("""
@@ -22,14 +22,12 @@ using Test
 {% end %}
 </ul>
 """)
-    rendered = teams_template(
-        Dict(
-            :teams => [
-                (name = "Jiangsu", score = 43, champion = true),
-                (name = "Beijing", score = 27, champion = false),
-            ],
-        ),
-    )
+    rendered = teams_template((
+        teams = [
+            (name = "Jiangsu", score = 43, champion = true),
+            (name = "Beijing", score = 27, champion = false),
+        ],
+    ))
     @test occursin("class=\"champion\"", rendered)
     @test occursin("Beijing: 27", rendered)
 
@@ -40,14 +38,16 @@ using Test
         first_loaded = Iwai.load(template_path)
         second_loaded = Iwai.load(template_path)
         @test first_loaded === second_loaded
-        @test first_loaded(Dict(:count => 1)) == "Count 1"
+        @test first_loaded((count = 1,)) == "Count 1"
 
         sleep(1.1)
         write(template_path, "Count {{ count }}!")
         reloaded = Iwai.load(template_path)
         @test reloaded !== first_loaded
-        @test reloaded(Dict(:count => 2)) == "Count 2!"
+        @test reloaded((count = 2,)) == "Count 2!"
     end
+
+    @test_throws ArgumentError template(Dict(:name => "Iwai"))
 
     sized = Iwai.parse("Hello {{ name }}"; optimize_buffer_size = true)
     @test sized.max_output_bytes == 0

@@ -4,6 +4,9 @@
 
 Jinja-like template engine for Julia.
 
+Iwai uses `NamedTuple` render contexts. Dictionary-based render contexts are not
+supported.
+
 Current features:
 
 - `{{ expr }}` expressions
