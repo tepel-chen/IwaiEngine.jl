@@ -1,0 +1,13 @@
+name = "Iwai"
+uuid = "5715ea1d-2681-4c29-8656-382bac65f29d"
+authors = ["t-chen <tepelchen501@gmail.com> and contributors"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.10.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
