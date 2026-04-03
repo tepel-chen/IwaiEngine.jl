@@ -70,7 +70,7 @@ function tokenize(source::String)
                 cursor = nextind(source, last(close_index))
             end
         else
-            push!(tokens, (:text, source[open_index]))
+            push!(tokens, (:text, string(source[open_index])))
             cursor = nextind(source, open_index)
         end
     end

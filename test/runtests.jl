@@ -231,4 +231,20 @@ using Test
 
     no_auto = IwaiEngine.parse("{{ html }}"; autoescape = false)
     @test no_auto((html = "<b>x</b>",)) == "<b>x</b>"
+
+    @testset "Literal Braces" begin
+        template = IwaiEngine.parse("""
+<script>
+const theme = { accent: "#f97316", muted: "#a8a29e" };
+</script>
+<div class="bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.18),_transparent_34%)]">
+  {{ title }}
+</div>
+""")
+
+        rendered = template((title = "CMS",))
+        @test occursin("const theme = { accent: \"#f97316\", muted: \"#a8a29e\" };", rendered)
+        @test occursin("bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.18),_transparent_34%)]", rendered)
+        @test occursin(r">\s*CMS\s*<", rendered)
+    end
 end
