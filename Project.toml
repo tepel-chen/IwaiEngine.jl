@@ -1,7 +1,7 @@
 name = "IwaiEngine"
 uuid = "5715ea1d-2681-4c29-8656-382bac65f29d"
 authors = ["t-chen <tepelchen501@gmail.com> and contributors"]
-version = "0.1.0"
+version = "0.2.0"
 
 [compat]
 julia = "1.10.10"
